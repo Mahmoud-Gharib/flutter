@@ -1,4 +1,4 @@
-name: Build and Release Flutter APK
+name: Build and Send Flutter APK via Email
 
 on:
   push:
@@ -33,17 +33,15 @@ jobs:
       - name: Build APK
         run: flutter build apk --release
 
-      - name: Create GitHub Release
-        id: create_release
-        uses: softprops/action-gh-release@v1
+      - name: Send APK via Email
+        uses: dawidd6/action-send-mail@v3
         with:
-          tag_name: ${{ github.run_number }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Upload APK to GitHub Release
-        uses: softprops/action-gh-release@v1
-        with:
-          files: build/app/outputs/flutter-apk/app-release.apk
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: ${{ secrets.GMAIL_USERNAME }}
+          password: ${{ secrets.GMAIL_PASSWORD }}
+          subject: Flutter APK Release ${{ github.run_number }}
+          body: Please find the attached APK file.
+          to: mahmoudgharib99999@gmail.com
+          from: ${{ secrets.GMAIL_USERNAME }}
+          attachments: build/app/outputs/flutter-apk/app-release.apk
