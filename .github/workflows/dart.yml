@@ -23,10 +23,6 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.32.0'
-          channel: 'stable'
-
-      - name: Enable Flutter Web (optional)
-        run: flutter config --enable-web
 
       - name: Install dependencies
         run: flutter pub get
@@ -35,19 +31,13 @@ jobs:
         run: flutter test
 
       - name: Build APK
-        run: flutter build apk --release --debug
-
-      - name: Upload APK as Artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: release-apk
-          path: build/app/outputs/flutter-apk/app-release.apk
+        run: flutter build apk --release
 
       - name: Create GitHub Release
         id: create_release
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: v${{ github.run_number }}
+          tag_name: ${{ github.run_number }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
