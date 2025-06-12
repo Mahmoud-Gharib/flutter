@@ -36,7 +36,7 @@ jobs:
       - name: Copy APK to repo folder
         run: |
           mkdir -p apk_release
-          cp build/app/outputs/flutter-apk/app-release.apk app-release.apk
+          cp build/app/outputs/flutter-apk/app-release.apk apk_release/app-release.apk
 
       - name: Commit and Push APK to repo
         run: |
