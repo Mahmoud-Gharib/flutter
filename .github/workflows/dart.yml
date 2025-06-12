@@ -44,6 +44,4 @@ jobs:
           git config user.email "github-actions@github.com"
           git add apk_release/app-release.apk
           git commit -m "Add latest APK file from run #${{ github.run_number }}" || echo "No changes to commit"
-          git push https://<TOKEN>@github.com/Mahmoud-Gharib/flutter.git main
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          git push https://x-access-token:${{ secrets.Gharib_ }}@github.com/Mahmoud-Gharib/flutter.git main
