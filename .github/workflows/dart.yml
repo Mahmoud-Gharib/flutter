@@ -38,21 +38,8 @@ jobs:
           mkdir -p apk_release
           cp build/app/outputs/flutter-apk/app-release.apk apk_release/app-release.apk
 
-      - name: Send email with APK
-        uses: dawidd6/action-send-mail@v3
+      - name: Upload APK as artifact
+        uses: actions/upload-artifact@v3
         with:
-          server_address: smtp.gmail.com
-          server_port: 465
-          username: ${{ secrets.EMAIL_USERNAME }}
-          password: ${{ secrets.EMAIL_PASSWORD }}
-          subject: "New APK Build from GitHub Actions"
-          body: |
-            Hi Mahmoud,
-
-            The latest APK build is attached.
-
-            Regards,
-            GitHub Actions
-          to: mahmoudgharib99999@gmail.com
-          from: ${{ secrets.EMAIL_USERNAME }}
-          attachments: apk_release/app-release.apk
+          name: release-apk
+          path: apk_release/app-release.apk
