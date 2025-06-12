@@ -1,4 +1,4 @@
-name: Build and Commit APK
+name: Build and Email APK
 
 on:
   push:
@@ -33,16 +33,26 @@ jobs:
       - name: Build APK
         run: flutter build apk --release
 
-      - name: Copy APK to repo folder
+      - name: Create apk_release folder
         run: |
           mkdir -p apk_release
           cp build/app/outputs/flutter-apk/app-release.apk apk_release/app-release.apk
 
-      - name: Commit and Push APK to repo
-        run: |
-          git config user.name "github-actions"
-          git config user.email "github-actions@github.com"
-          git add apk_release/app-release.apk
-          git commit -m "Add latest APK file from run #${{ github.run_number }}" || echo "No changes to commit"
-          git push https://x-access-token:${{ secrets.Gharib_ }}@github.com/Mahmoud-Gharib/flutter.git main
+      - name: Send email with APK
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: ${{ secrets.EMAIL_USERNAME }}
+          password: ${{ secrets.EMAIL_PASSWORD }}
+          subject: "New APK Build from GitHub Actions"
+          body: |
+            Hi Mahmoud,
 
+            The latest APK build is attached.
+
+            Regards,
+            GitHub Actions
+          to: mahmoudgharib99999@gmail.com
+          from: ${{ secrets.EMAIL_USERNAME }}
+          attachments: apk_release/app-release.apk
